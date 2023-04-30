@@ -1,0 +1,112 @@
+---
+title: "FA-8 | APM1110"
+author: "LEIANA MARI D. AQUINO"
+date: "2023-04-30"
+output: html_notebook
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **Exercises 16.1** {style="Blue"}
+
+1.  **In Example 16.3 with 𝜆 = 4 per minute, use R to obtain:**
+
+Let us now use `pexp` to calculate the probabilities considered in the following.
+
+-   P(T ≤ 0.25) = P(time between submissions is at most 15 seconds);
+
+```{r, echo = FALSE}
+a15s <- pexp(.25,4)
+a15s
+```
+
+-   P(T \> 0.5) = P(time between submissions is greater than 30 seconds);
+
+```{r, echo = FALSE}
+g30s <- 1 - pexp(.5,4)
+g30s
+```
+
+-   P(0.25 \< T \< 1) = P(time between submissions is between 15 seconds sand 1 minute).
+
+```{r, echo = FALSE}
+b151s <- pexp(1,4) - pexp(.25,4)
+b151s
+```
+
+2.  **The average rate of job submissions in a computer center is 2 per minute. If it can be assumed that the number of submissions per minute has a Poisson distribution, calculate the probability that:**
+
+-   more than two jobs will arrive in a minute
+
+Let *X* \~ *Pois*(𝜆 = 2). Using the Poisson CDF `ppois()`, we have `1 - ppois(2,2)` to get:
+
+```{r, echo = FALSE}
+m2j <- 1 - ppois(2, 2)
+m2j
+```
+
+-   at least 30 seconds will elapse between any two jobs;
+
+Let *W* as the waiting for the next job. Using the exponential CDF `pexp()`, we have `1 - pexp(.5,2)` to get:
+
+```{r, echo = FALSE}
+al30s <- 1 - pexp(.5,2)
+al30s
+```
+
+-   less than 30 seconds will elapse between jobs;
+
+To denote that the elapse between jobs is less than 30 seconds, we have *P*(X \< 30) = 0.135. With, `1 - exp(-30/15)`we get:
+
+```{r, echo = FALSE}
+l30s <- 1 - exp(-30/15)
+l30s
+```
+
+-   a job will arrive in the next 30 seconds, if no jobs have arrived in the last 30 seconds.
+
+Applying the Markov property, we have *P*(X \< 30 + 30 \| X \> 30) = *P*(X \< 30). Using the `pexp()`, we have `1 - pexp(.5,2)` to get:
+
+```{r, echo = FALSE}
+j30s <- 1 - al30s
+j30s
+```
+
+3.  **A website receives an average of 15 visits per hour, which arrive following a Poisson distribution.** Note that `𝜆 = 0.25 minutes`.
+
+-   Calculate the probability that at least 10 minutes will elapse without a visit.
+
+We need to calculate *P*(T \> 10), where *T* is the waiting time.
+
+```{r, echo = FALSE}
+a10s <- 1 - pexp(10,.25)
+a10s
+```
+
+-   What is the probability that in any hour, there will be less than eight visits?
+
+The probability that in any hour, there will be less than eight visits, P(x \< 2). We get:
+
+```{r, echo = FALSE}
+p8v <- exp(-0.25) + 0.25*exp(-0.25)
+p8v
+```
+
+-   Suppose that 15 minutes have elapsed since the last visit, what is the probability that a visit will occur in the next 15 minutes.
+
+Applying the Markov property, we have *P*(X ≤ 30 \| X \> 15) = *P*(X \< 15). Using the `pexp()`, we get:
+
+```{r, echo = FALSE}
+o15s <- pexp(15, 0.25)
+o15s
+```
+
+-   Calculate the top quartile, and explain what it means.
+
+```{r, echo = FALSE}
+qT <- qexp(0.1, 0.5)
+qT
+```
